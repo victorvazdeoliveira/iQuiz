@@ -8,14 +8,30 @@
 import UIKit
 
 class QuestaoViewController: UIViewController {
-
+    @IBOutlet weak var tituloQuestaoLabel: UILabel!
+    
+    @IBOutlet var botoesResposta: [UIButton]!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        configurarLayout()
     }
     
-
+    func configurarLayout() {
+        navigationItem.hidesBackButton = true
+        
+        for botao in botoesResposta {
+            botao.layer.cornerRadius = 12
+        }
+    }
+    
+    @IBAction func respostaBotaoPressionado(_ sender: UIButton) {
+        print(sender.tag)
+    }
+    
     /*
     // MARK: - Navigation
 
