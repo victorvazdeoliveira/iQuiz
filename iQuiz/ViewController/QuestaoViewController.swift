@@ -46,8 +46,13 @@ class QuestaoViewController: UIViewController {
             
             botao.setTitle(tituloBotao, for: .normal)
             botao.backgroundColor = UIColor(red: 116/255, green: 50/255, blue: 255/255, alpha: 1)
+            botao.isEnabled = true
         }
         
+    }
+    
+    func navegaParaTelaDesempenho() {
+        performSegue(withIdentifier: "irParaTelaDesempenho", sender: nil)
     }
     
     @IBAction func respostaBotaoPressionado(_ sender: UIButton) {
@@ -56,9 +61,9 @@ class QuestaoViewController: UIViewController {
 //        pontuação += usuarioAcertouResposta ? 1 : 0
         if usuarioAcertouResposta {
             pontuação += 1
-            sender.backgroundColor = UIColor(red: 11/255, green: 161/255, blue: 53/255, alpha: 1)
+            sender.backgroundColor = UIColor.corDeFundoVerde
         } else {
-            sender.backgroundColor = UIColor(red: 211/255, green: 17/255, blue: 17/255, alpha: 1)
+            sender.backgroundColor = UIColor.corDeFundoVermelho
         }
         
 //        numeroQuestao = numeroQuestao < questoes.count - 1 ? numeroQuestao + 1 : 0
@@ -66,10 +71,24 @@ class QuestaoViewController: UIViewController {
         if numeroQuestao < questoes.count - 1 {
             numeroQuestao += 1
             
+            for botao in botoesResposta {
+                botao.isEnabled = false
+            }
+            
             Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(configurarQuestao), userInfo: nil, repeats: false)
+        } else {
+            navegaParaTelaDesempenho()
         }
         
         print(usuarioAcertouResposta ? "Usuário acertou a resposta, a pontuação é de: \(pontuação)" : "Usuário errou a resposta, a pontuação é de: \(pontuação)")
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let desempenhoVC = segue.destination as? DesempenhoViewController else {
+            return
+        }
+        
+        desempenhoVC.pontuacao = pontuação
     }
     
     /*
